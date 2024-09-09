@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci & Missing Number Challenge</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Fibonacci & Missing Number Challenge</h2>
+
+        <!-- Fibonacci Sequence Section -->
+        <h4>Fibonacci Sequence</h4>
+        <div class="form-group">
+            <label for="fibonacciInput">Number of Fibonacci terms:</label>
+            <input type="number" id="fibonacciInput" class="form-control" placeholder="Enter a positive number">
+            <button class="btn btn-primary mt-2" onclick="generateFibonacci()">Generate Fibonacci</button>
+        </div>
+        <p id="fibonacciOutput" class="text-success"></p>
+
+        <!-- Missing Number Game Section -->
+        <h4>Missing Number Game</h4>
+        <div class="form-group">
+            <label for="numberInput">Enter a series of numbers (comma separated):</label>
+            <input type="text" id="numberInput" class="form-control" placeholder="e.g. 2,1,5,4,6,9,7,8,10">
+            <button class="btn btn-primary mt-2" onclick="findMissingNumbers()">Find Missing Numbers</button>
+        </div>
+        <p id="missingNumberOutput" class="text-danger"></p>
+
+        <!-- Error Message Section -->
+        <p id="errorMessage" class="text-danger"></p>
+    </div>
+
+    <script>
+        // Input validation
+        function isValidNumber(value) {
+            return !isNaN(value) && value > 0;
+        }
+
+        function isValidSeries(series) {
+            return series.split(',').every(num => !isNaN(num.trim()) && num.trim() !== '');
+        }
+
+        // Challenge 1: Fibonacci Sequence
+        function generateFibonacci() {
+            const input = document.getElementById('fibonacciInput').value;
+            const output = document.getElementById('fibonacciOutput');
+            const error = document.getElementById('errorMessage');
+            output.innerHTML = '';
+            error.innerHTML = '';
+
+            if (!isValidNumber(input)) {
+                error.innerHTML = 'Please enter a valid positive number for Fibonacci sequence.';
+                return;
+            }
+
+            let n = parseInt(input);
+            let fib = [0, 1];
+
+            for (let i = 2; i < n; i++) {
+                fib.push(fib[i - 1] + fib[i - 2]);
+            }
+
+            output.innerHTML = 'Fibonacci Sequence: ' + fib.join(', ');
+        }
+
+        // Challenge 2: Missing Number Game
+        function findMissingNumbers() {
+            const input = document.getElementById('numberInput').value;
+            const output = document.getElementById('missingNumberOutput');
+            const error = document.getElementById('errorMessage');
+            output.innerHTML = '';
+            error.innerHTML = '';
+
+            if (!isValidSeries(input)) {
+                error.innerHTML = 'Please enter a valid comma-separated list of numbers.';
+                return;
+            }
+
+            let numbers = input.split(',').map(Number).sort((a, b) => a - b);
+            let missingNumbers = [];
+
+            for (let i = Math.min(...numbers); i <= Math.max(...numbers); i++) {
+                if (!numbers.includes(i)) {
+                    missingNumbers.push(i);
+                }
+            }
+
+            output.innerHTML = missingNumbers.length 
+                ? 'Missing Numbers: ' + missingNumbers.join(', ') 
+                : 'No numbers are missing.';
+        }
+    </script>
+
+</body>
+</html>
